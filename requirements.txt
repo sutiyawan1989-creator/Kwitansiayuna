@@ -1,0 +1,18 @@
+# Web framework
+streamlit==1.27.0
+
+# PDF generation
+fpdf==1.7.2
+
+# Data handling
+pandas==2.1.1
+
+# Convert number to words (terbilang)
+num2words==0.5.12
+
+# QR code generation
+qrcode==7.4.2
+
+# Image handling (logo / QR)
+Pillow==10.1.0
+
