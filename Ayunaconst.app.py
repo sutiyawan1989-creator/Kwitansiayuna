@@ -147,8 +147,7 @@ if st.button("Buat Semua Kwitansi Ultimate"):
         else:
             st.warning("Tidak ada kwitansi yang dibuat. Pastikan semua nama penerima diisi!")
     finally:
-        # --- Bersihkan temp files ---
+        # Bersihkan temp files
         for f in temp_files:
             if os.path.exists(f):
                 os.remove(f)
-                
