@@ -6,13 +6,13 @@ import qrcode
 from io import BytesIO
 from PIL import Image
 
-st.set_page_config(page_title="Kwitansi Ultimate 5.0", layout="centered")
-st.title("🧾 Kwitansi Ultimate 5.0 – Profesional, QR Code, Branding")
+st.set_page_config(page_title="Kwitansi Ultimate Web", layout="centered")
+st.title("🧾 Kwitansi Ultimate 5.0 – Web App")
 
 # --- Upload Logo / Watermark ---
 logo_file = st.file_uploader("Unggah Logo / Watermark (opsional)", type=["png","jpg"])
 
-# --- Form Input ---
+# --- Input Data Penerima & Item ---
 st.markdown("### Input Data Penerima & Item")
 n_penerima = st.number_input("Jumlah Penerima", min_value=1, max_value=10, value=1)
 
@@ -38,7 +38,7 @@ for i in range(n_penerima):
         "items": items
     })
 
-# --- Generate PDF Ultimate ---
+# --- Generate PDF Button ---
 if st.button("Buat Semua Kwitansi Ultimate"):
 
     pdf = FPDF(format='A4', unit='mm')
@@ -58,23 +58,22 @@ if st.button("Buat Semua Kwitansi Ultimate"):
 
         pdf.add_page()
 
-        # --- Garis Tepi ---
+        # Garis tepi
         pdf.set_line_width(0.5)
         pdf.rect(5,5,200,287)
 
-        # --- Logo Header ---
+        # Logo header
         if logo_file:
             pdf.image(logo_file, x=10, y=10, w=30)
 
-        # --- Header Kwitansi ---
+        # Header
         pdf.set_font("Arial",'B',18)
         pdf.cell(0,10,"KWITANSI RESMI", ln=True, align='C')
-        pdf.ln(2)
         pdf.set_font("Arial",'',10)
         pdf.cell(0,6,f"Nomor: {nomor_kwitansi}", ln=True, align='C')
         pdf.ln(5)
 
-        # --- Info Penerima ---
+        # Info penerima
         pdf.set_font("Arial",'',12)
         pdf.cell(0,8,f"Telah terima dari: {penerima['nama']}", ln=True)
         pdf.cell(0,8,f"Tanggal: {penerima['tanggal'].strftime('%d-%m-%Y')}", ln=True)
@@ -82,7 +81,7 @@ if st.button("Buat Semua Kwitansi Ultimate"):
             pdf.multi_cell(0,8,f"Keterangan: {penerima['keterangan']}")
         pdf.ln(5)
 
-        # --- Tabel Item ---
+        # Tabel item
         pdf.set_font("Arial",'B',12)
         pdf.set_fill_color(200,230,255)
         pdf.cell(80,8,"Deskripsi",border=1, fill=True)
@@ -104,14 +103,14 @@ if st.button("Buat Semua Kwitansi Ultimate"):
         pdf.cell(0,8,f"Terbilang: {terbilang}", ln=True)
         pdf.ln(10)
 
-        # --- QR Code Nomor Kwitansi ---
+        # QR Code nomor kwitansi
         qr_img = qrcode.make(nomor_kwitansi)
         qr_bytes = BytesIO()
         qr_img.save(qr_bytes, format='PNG')
         qr_bytes.seek(0)
         pdf.image(qr_bytes, x=170, y=10, w=30)
 
-        # --- Footer Profesional ---
+        # Footer profesional
         pdf.set_font("Arial",'',12)
         pdf.cell(100,8,"Penerima", ln=False, align='L')
         pdf.cell(0,8,"Hormat Kami", ln=True, align='R')
@@ -122,7 +121,7 @@ if st.button("Buat Semua Kwitansi Ultimate"):
         generated = True
 
     if generated:
-        file_name = "kwitansi_ultimate_batch_5.0.pdf"
+        file_name = "kwitansi_ultimate_web.pdf"
         pdf.output(file_name)
         with open(file_name,"rb") as f:
             st.download_button(
@@ -131,6 +130,6 @@ if st.button("Buat Semua Kwitansi Ultimate"):
                 file_name=file_name,
                 mime="application/pdf"
             )
-        st.success("Semua kwitansi versi Ultimate 5.0 berhasil dibuat!")
+        st.success("Semua kwitansi web versi Ultimate berhasil dibuat!")
     else:
         st.warning("Tidak ada kwitansi yang dibuat. Pastikan semua nama penerima diisi!")
